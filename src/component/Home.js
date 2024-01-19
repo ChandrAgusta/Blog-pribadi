@@ -3,26 +3,43 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import "../component/Home.css";
 import { Row, Col, Button } from "react-bootstrap";
+import { useEffect } from "react";
+import { useState } from "react";
 
 function Home() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(()=>{
+    setIsVisible(true)
+  },[]);
+
   return (
     <div className="container">
       <body>
         {/* Navbar Section */}
-        <Navbar collapseOnSelect expand="lg" className="navbar" fixed="top" style={{ padding:'3vh' }}>
-          <Container>
+        <Navbar
+          collapseOnSelect
+          expand="lg"
+          className="navbar"
+          fixed="top"
+          style={{ padding: "2vh" }}
+        >
+          <Container fluid>
             <Navbar.Brand href="#home">
-              <img src="../img/logo.png" width={60} height={35}></img>
+              <img className="logo" src="../img/logo.png" width={60}></img>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="mx-auto">
                 <Nav.Link className="navigasi" href="#Profile">
-                  Profile
+                  Home
                 </Nav.Link>
-                <Nav.Link className="navigasi" href="#features">Experience</Nav.Link>
-                <Nav.Link className="navigasi" href="#pricing">Tools</Nav.Link>
-                <Nav.Link className="navigasi" href="#pricing">Experience</Nav.Link>
+                <Nav.Link className="navigasi" href="#Skills">
+                  Skills
+                </Nav.Link>
+                <Nav.Link className="navigasi" href="#Tools">
+                  Tools
+                </Nav.Link>
               </Nav>
             </Navbar.Collapse>
           </Container>
@@ -31,15 +48,13 @@ function Home() {
 
         {/* Profile */}
         <Container fluid className="profile" id="Profile">
-          <Row>
-            <Col xs={8} className="text">
+          <Row className="img">
+            <Col md={{ span: 8 }} className="text">
               <Col className="contact">
                 <a href="">
                   <Button variant="">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      width="35"
-                      height="35"
                       fill="#7E7366"
                       class="bi bi-linkedin"
                       viewBox="-1 2 18 12"
@@ -53,8 +68,6 @@ function Home() {
                   <Button variant="">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      width="35"
-                      height="35"
                       fill="#7E7366"
                       class="bi bi-github"
                       viewBox="-1 2 18 12"
@@ -68,8 +81,6 @@ function Home() {
                   <Button variant="">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      width="35"
-                      height="35"
                       fill="#7E7366"
                       class="bi bi-envelope-at-fill"
                       viewBox="-1 2 18 12"
@@ -84,8 +95,6 @@ function Home() {
                   <Button variant="">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      width="35"
-                      height="35"
                       fill="#7E7366"
                       class="bi bi-instagram"
                       viewBox="-1 2 18 12"
@@ -95,9 +104,9 @@ function Home() {
                   </Button>
                 </a>
               </Col>
-              <Container style={{ marginTop:'2vh' }}>
-                <h1 className="judul">I am Aldityo Chandra Agusta</h1>
-                <p>
+              <Container>
+                <h1 className={`judul${isVisible ? ' appear' : ''}`}>I'm Aldityo Chandra Agusta</h1>
+                <p style={{ marginTop: "3vh" }}>
                   Hey, I'm Aldityo Chandra Agusta, a web wizard passionate about
                   crafting beautiful and dynamic user interfaces. Join me in
                   exploring the latest trends and creating digital wonders.
@@ -105,20 +114,59 @@ function Home() {
                 </p>
               </Container>
 
-              <Container style={{ marginTop:'3vh' }}>
-                <Button variant="outline-dark">Download CV</Button>
+              <Container style={{ marginTop: "4vh" }} className="concv">
+                <button className="cv">Download CV</button>
               </Container>
-        
             </Col>
-            <Col className="img">
-              <img src="./img/fotoDiri.png" width={450}></img>
-            </Col>
+            {/* <Col className="img"> */}
+              {/* <img className="fotoDiri" src="./img/fotoDiri.png" width={300}></img> */}
+            {/* </Col> */}
           </Row>
         </Container>
         {/* End Of Profile */}
-        
 
 
+        {/* Skills */}
+        <Container id="Skills" className="Skills">
+          <h1 style={{ display:'flex', justifyContent:'center', marginBottom:'3vh'}}>Skills</h1>
+          <Row>
+            <Col className="kolomSkills"><img className="ikon" src="./img/design.png"></img></Col>
+            <Col className="kolomSkills"><img className="ikon" src="./img/dev.png"></img></Col>
+            <Col className="kolomSkills"><img className="ikon" src="./img/front.png"></img></Col>
+          </Row>
+          <Row>
+            <Col className="kolomSkills">Design</Col>
+            <Col className="kolomSkills">Development</Col>
+            <Col className="kolomSkills">Front-end Development</Col>
+          </Row>
+        </Container>
+        {/* End Of Skills*/}
+
+
+        {/*Tools*/}
+        <Container id="Tools" className="Tools">
+          <h1 style={{ display:'flex', justifyContent:'center', marginTop:'5vh' }}>Tools</h1>
+          <Row style={{ marginBlock:'5vh' }}>
+            <Col className="kolomTools"><img className="ikonT" src="./icons/html.png"></img></Col>
+            <Col className="kolomTools"><img className="ikonT" src="./icons/css.png"></img></Col>
+            <Col className="kolomTools"><img className="ikonT" src="./icons/js.png"></img></Col>
+            <Col className="kolomTools"><img className="ikonT" src="./icons/python.png"></img></Col>
+          </Row>
+          <Row style={{ marginBlock:'5vh' }}>
+            <Col className="kolomTools"><img className="ikonT" src="./icons/php.png"></img></Col>
+            <Col className="kolomTools"><img className="ikonT" src="./icons/bootsrap.png"></img></Col>
+            <Col className="kolomTools"><img className="ikonT" src="./icons/laravel.png"></img></Col>
+            <Col className="kolomTools"><img className="ikonT" src="./icons/react.png"></img></Col>
+          </Row>
+
+          <Row>
+            <Col className="kolomTools"></Col>
+            <Col className="kolomTools"><img className="ikonT" src="./icons/sql.png"></img></Col>
+            <Col className="kolomTools"><img className="ikonT" src="./icons/figma.png"></img></Col>
+            <Col className="kolomTools"></Col>
+          </Row>
+        </Container>
+        {/* End Of Tools */}
       </body>
     </div>
   );
