@@ -5,6 +5,7 @@ import "../component/Home.css";
 import { Row, Col, Button } from "react-bootstrap";
 import { useEffect } from "react";
 import { useState } from "react";
+import FileSaver from "file-saver";
 
 function Home() {
   const [isVisible, setIsVisible] = useState(false);
@@ -12,6 +13,13 @@ function Home() {
   useEffect(()=>{
     setIsVisible(true)
   },[]);
+
+  const saveFile = () =>{
+    FileSaver.saveAs(
+      process.env.PUBLIC_URL+"/assets/cv.pdf",
+      "CV_Chandra-Agusta.pdf"
+    );
+  };
 
   return (
     <div className="container">
@@ -51,7 +59,7 @@ function Home() {
           <Row className="img">
             <Col md={{ span: 8 }} className="text">
               <Col className="contact">
-                <a href="">
+                <a href="https://www.linkedin.com/in/chandraagusta/">
                   <Button variant="">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -107,15 +115,12 @@ function Home() {
               <Container>
                 <h1 className={`judul${isVisible ? ' appear' : ''}`}>I'm Aldityo Chandra Agusta</h1>
                 <p style={{ marginTop: "3vh" }}>
-                  Hey, I'm Aldityo Chandra Agusta, a web wizard passionate about
-                  crafting beautiful and dynamic user interfaces. Join me in
-                  exploring the latest trends and creating digital wonders.
-                  Welcome to my web adventure! 🚀
+                Informatics student at Sanata Dharma University with a focus on System Development. Special expertise in front-end to create attractive and interactive websites. Good at responsive interface design and implementation. The combination of technical and design, as well as the command of programming languages and web technologies, makes me a valuable asset for innovative web development projects.
                 </p>
               </Container>
 
               <Container style={{ marginTop: "4vh" }} className="concv">
-                <button className="cv">Download CV</button>
+                <button className="cv" onClick={saveFile}>Download CV</button>
               </Container>
             </Col>
             {/* <Col className="img"> */}
@@ -134,10 +139,15 @@ function Home() {
             <Col className="kolomSkills"><img className="ikon" src="./img/dev.png"></img></Col>
             <Col className="kolomSkills"><img className="ikon" src="./img/front.png"></img></Col>
           </Row>
-          <Row>
+          <Row style={{fontWeight:'bold' , marginBlock:'1% 2%', textAlign:'center'}}>
             <Col className="kolomSkills">Design</Col>
             <Col className="kolomSkills">Development</Col>
             <Col className="kolomSkills">Front-end Development</Col>
+          </Row>
+          <Row style={{marginTop:'1%', textAlign:'center', marginBottom:'4%'}}>
+            <Col className="kolomSkills">Capable of producing design prototypes that help visualize concepts clearly.</Col>
+            <Col className="kolomSkills">Have skills in designing and implementing effective web development solutions.</Col>
+            <Col className="kolomSkills">Focuses on developing an interactive and user-friendly front-end.</Col>
           </Row>
         </Container>
         {/* End Of Skills*/}

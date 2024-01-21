@@ -79,7 +79,7 @@ p {
 /* Skills */
 .Skills {
   margin-top: 10%;
-  padding-block: 2vh;
+  padding-block: 4%;
   border-radius: 3vh;
   box-shadow: -5px -5px 20px rgba(255, 255, 255, 0.822),
     5px 5px 20px rgba(0, 0, 0, 0.358);
@@ -156,11 +156,11 @@ p {
   }
 } */
 
-@media(max-width:360px){
+/* @media(max-width:360px){
   .ikonT{
     background-color: yellowgreen;
   }
-}
+} */
 
 @media (max-width: 400px) {
   .bi {
@@ -227,7 +227,7 @@ p {
     }
     .cv {
         width: 18dvh;
-        height: 5dvh;
+        height: 2%;
     }
 
     .ikonT{
@@ -251,7 +251,11 @@ p {
   .cv {
     margin-top: -2vh;
     width: 15dvh;
-    height: 5dvh;
+    height: 5%;
+  }
+
+  .Tools{
+    margin-top: 10%;
   }
 
   .ikonT{
