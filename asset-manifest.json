@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/Blog-pribadi/static/css/main.130c1748.css",
+    "main.css": "/Blog-pribadi/static/css/main.4b4477f3.css",
     "main.js": "/Blog-pribadi/static/js/main.ad80ff9a.js",
-    "static/media/fotoDiri.png": "/Blog-pribadi/static/media/fotoDiri.8b8d3cff9d828b730775.png",
+    "static/media/fotoDiri.png": "/Blog-pribadi/static/media/fotoDiri.b3634b2264dfeea0aa46.png",
     "index.html": "/Blog-pribadi/index.html",
-    "main.130c1748.css.map": "/Blog-pribadi/static/css/main.130c1748.css.map",
+    "main.4b4477f3.css.map": "/Blog-pribadi/static/css/main.4b4477f3.css.map",
     "main.ad80ff9a.js.map": "/Blog-pribadi/static/js/main.ad80ff9a.js.map"
   },
   "entrypoints": [
-    "static/css/main.130c1748.css",
+    "static/css/main.4b4477f3.css",
     "static/js/main.ad80ff9a.js"
   ]
 }
