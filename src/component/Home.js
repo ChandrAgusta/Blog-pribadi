@@ -1,183 +1,603 @@
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import "../component/Home.css";
-import { Row, Col, Button } from "react-bootstrap";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import {
+  Container,
+  Nav,
+  Navbar,
+  Row,
+  Col,
+  Button,
+  Card,
+  Carousel,
+  Dropdown,
+} from "react-bootstrap";
 import FileSaver from "file-saver";
+import { FaSun, FaMoon, FaGlobe } from "react-icons/fa";
+import "./Home.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+
+// Multilingual content
+const content = {
+  en: {
+    nav: {
+      home: "Home",
+      skills: "Skills",
+      projects: "Projects",
+      tools: "Tools",
+      contact: "Contact",
+    },
+    hero: {
+      hello: "Hello, I'm",
+      role: "Full Stack Developer",
+      description:
+        "I build exceptional digital experiences with modern web technologies.",
+      downloadCV: "Download CV",
+      viewProjects: "View Projects",
+    },
+    skills: {
+      title: "My Skills",
+      subtitle: "Technologies I work with",
+      frontend: "Frontend",
+      backend: "Backend",
+      database: "Database",
+      devops: "DevOps",
+    },
+    projects: {
+      title: "Featured Projects",
+      subtitle: "Some of my recent work",
+      viewProject: "View Project",
+    },
+    // Tambahkan dalam const content
+    tools: {
+      title: 
+       "Tools & Technologies",
+      subtitle: "My daily development tools"
+      
+    },
+    contact: {
+      title: "Get In Touch",
+      subtitle: "Let's work together",
+      email: "Email",
+      phone: "Phone",
+    },
+    footer: {
+      rights: "All rights reserved",
+    },
+  },
+  id: {
+    nav: {
+      home: "Beranda",
+      skills: "Keahlian",
+      projects: "Proyek",
+      tools: "Alat",
+      contact: "Kontak",
+    },
+    hero: {
+      hello: "Halo, saya",
+      role: "Pengembang Full Stack",
+      description:
+        "Saya membangun pengalaman digital yang luar biasa dengan teknologi web modern.",
+      downloadCV: "Unduh CV",
+      viewProjects: "Lihat Proyek",
+    },
+    skills: {
+      title: "Keahlian Saya",
+      subtitle: "Teknologi yang saya gunakan",
+      frontend: "Frontend",
+      backend: "Backend",
+      database: "Database",
+      devops: "DevOps",
+    },
+    tools: {
+      title: 
+        "Alat & Teknologi"
+      ,
+      subtitle: 
+       
+        "Alat-alat pengembangan yang saya gunakan"
+      ,
+    },
+    projects: {
+      title: "Proyek Unggulan",
+      subtitle: "Beberapa karya terbaru saya",
+      viewProject: "Lihat Proyek",
+    },
+    contact: {
+      title: "Hubungi Saya",
+      subtitle: "Mari bekerja sama",
+      email: "Email",
+      phone: "Telepon",
+    },
+    footer: {
+      rights: "Hak cipta dilindungi",
+    },
+  },
+};
+
+// Project data
+const projectsData = [
+  {
+    title: "Ecommerce Taman Komunikasi",
+    description: {
+      en: "Comprehensive e-commerce platform for Catholic communication products with payment gateway, shipping integration, and admin dashboard",
+      id: "Platform e-commerce lengkap untuk produk komunikasi Katolik dengan gateway pembayaran, integrasi pengiriman, dan dashboard admin"
+    },
+    image: "/img/takom.png",
+    link: "https://takomkanisius.id/",
+    technologies: ["Laravel", "ReactJS", "Midtrans", "RajaOngkir", "REST API", "Tailwind"],
+  },
+  {
+    title: "Ecommerce Batik Kaliagung",
+    description: {
+      en: "Online store for traditional Javanese batik with product customization and local payment options",
+      id: "Toko online untuk batik Jawa tradisional dengan kustomisasi produk dan pilihan pembayaran lokal"
+    },
+    image: "/img/batik.png",
+    link: "https://batikkaliagung.com/",
+    technologies: ["Laravel", "Midtrans", "RestAPI", "Bootstrap"],
+  },
+  {
+    title: "Website Profile Iwak Mas Trans",
+    description: {
+      en: "Travel company website with tour ",
+      id: "Website perusahaan travel "
+    },
+    image: "/img/iwakmas.png",
+    link: "https://iwakmastrans.com/",
+    technologies: ["Laravel", "Bootstrap"],
+  },
+  {
+    title: "Koperasi Palwakencana",
+    description: {
+      en: "Cooperative management system with member registration, savings, and loan features",
+      id: "Sistem manajemen koperasi dengan fitur pendaftaran anggota, simpanan, dan pinjaman"
+    },
+    image: "/img/palwakencana.png",
+    link: "https://palwakencana.com/",
+    technologies: ["CodeIgniter"],
+  },
+  {
+    title: "B2C PT Kanisius",
+    description: {
+      en: "Royalty notification system for authors with automatic calculation and reporting features",
+      id: "Sistem notifikasi royalty untuk pengarang dengan fitur perhitungan otomatis dan pelaporan"
+    },
+    image: "/img/royalty.png",
+    link: "https://mitra.kanisiusmedia.co.id/",
+    technologies: ["CodeIgniter", "API", "Fonte", "SMTP"],
+  },
+  {
+    title: "Sistem Seleksi Karyawan",
+    description: {
+      en: "Employee recruitment system with online tests, scoring, and candidate management",
+      id: "Sistem rekrutmen karyawan dengan tes online, penilaian, dan manajemen kandidat"
+    },
+    image: "/img/seleksi.png",
+    link: "https://seleksi.kanisiusmedia.co.id/",
+    technologies: ["CodeIgniter", "API", "Fonte", "SMTP"],
+  }
+];
 
 function Home() {
   const [isVisible, setIsVisible] = useState(false);
+  const [index, setIndex] = useState(0);
+  const [darkMode, setDarkMode] = useState(false);
+  const [language, setLanguage] = useState("en");
 
-  useEffect(()=>{
-    setIsVisible(true)
-  },[]);
+  // Load preferences from localStorage
+  useEffect(() => {
+    const savedDarkMode = localStorage.getItem("darkMode") === "true";
+    const savedLanguage = localStorage.getItem("language") || "en";
 
-  const saveFile = () =>{
+    setDarkMode(savedDarkMode);
+    applyTheme(savedDarkMode);
+    setLanguage(savedLanguage);
+    setIsVisible(true);
+  }, []);
+
+  const applyTheme = (isDark) => {
+    document.documentElement.setAttribute(
+      "data-theme",
+      isDark ? "dark" : "light"
+    );
+  };
+
+  // Save preferences to localStorage
+  const toggleDarkMode = () => {
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    localStorage.setItem("darkMode", newMode);
+    applyTheme(newMode);
+  };
+
+  const changeLanguage = (lang) => {
+    setLanguage(lang);
+    localStorage.setItem("language", lang);
+  };
+
+  const handleSelect = (selectedIndex) => {
+    setIndex(selectedIndex);
+  };
+
+  const saveFile = () => {
     FileSaver.saveAs(
-      process.env.PUBLIC_URL+"/assets/cv.pdf",
+      process.env.PUBLIC_URL + "/assets/cv.pdf",
       "CV_Chandra-Agusta.pdf"
     );
   };
 
   return (
-    <div className="container">
-      <body>
-        {/* Navbar Section */}
-        <Navbar
-          collapseOnSelect
-          expand="lg"
-          className="navbar"
-          fixed="top"
-          style={{ padding: "2vh" }}
-        >
-          <Container fluid>
-            <Navbar.Brand href="#home">
-              <img className="logo" src="./img/logo.png" width={60}></img>
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-            <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav className="mx-auto">
-                <Nav.Link className="navigasi" href="#Profile">
-                  Home
-                </Nav.Link>
-                <Nav.Link className="navigasi" href="#Skills">
-                  Skills
-                </Nav.Link>
-                <Nav.Link className="navigasi" href="#Tools">
-                  Tools
-                </Nav.Link>
-              </Nav>
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
-        {/* End Of Navbar */}
+    <div data-theme={darkMode ? "dark" : "light"} className="app-container">
+      {/* Navbar */}
+      <Navbar expand="lg" className="modern-navbar" fixed="top">
+        <Container>
+          <Navbar.Brand href="#home" className="navbar-brand">
+            <span className="brand-logo">CA</span>
+            <span className="brand-name">Chandra Agusta</span>
+          </Navbar.Brand>
 
-        {/* Profile */}
-        <Container fluid className="profile" id="Profile">
-          <Row className="img">
-            <Col md={{ span: 8 }} className="text">
-              <Col className="contact">
-                <a href="https://www.linkedin.com/in/chandraagusta/">
-                  <Button variant="">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="#7E7366"
-                      class="bi bi-linkedin"
-                      viewBox="-1 2 18 12"
-                    >
-                      <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" />
-                    </svg>
-                  </Button>
-                </a>
+          <div className="navbar-controls">
+            <Button
+              variant="link"
+              className="theme-toggle"
+              onClick={toggleDarkMode}
+              aria-label={
+                darkMode
+                  ? content[language].nav.lightMode
+                  : content[language].nav.darkMode
+              }
+            >
+              {darkMode ? <FaSun size={20} /> : <FaMoon size={20} />}
+            </Button>
 
-                <a href="https://github.com/ChandrAgusta">
-                  <Button variant="">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="#7E7366"
-                      class="bi bi-github"
-                      viewBox="-1 2 18 12"
-                    >
-                      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8" />
-                    </svg>
-                  </Button>
-                </a>
+            <Dropdown className="language-selector">
+              <Dropdown.Toggle variant="link" id="dropdown-language">
+                <FaGlobe size={20} />
+                <span className="ms-1">{language.toUpperCase()}</span>
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={() => changeLanguage("en")}>
+                  English
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => changeLanguage("id")}>
+                  Indonesia
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
 
-                <a href="mailto:agustachandra1@gmail.com">
-                  <Button variant="">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="#7E7366"
-                      class="bi bi-envelope-at-fill"
-                      viewBox="-1 2 18 12"
-                    >
-                      <path d="M2 2A2 2 0 0 0 .05 3.555L8 8.414l7.95-4.859A2 2 0 0 0 14 2zm-2 9.8V4.698l5.803 3.546zm6.761-2.97-6.57 4.026A2 2 0 0 0 2 14h6.256A4.5 4.5 0 0 1 8 12.5a4.49 4.49 0 0 1 1.606-3.446l-.367-.225L8 9.586zM16 9.671V4.697l-5.803 3.546.338.208A4.5 4.5 0 0 1 12.5 8c1.414 0 2.675.652 3.5 1.671" />
-                      <path d="M15.834 12.244c0 1.168-.577 2.025-1.587 2.025-.503 0-1.002-.228-1.12-.648h-.043c-.118.416-.543.643-1.015.643-.77 0-1.259-.542-1.259-1.434v-.529c0-.844.481-1.4 1.26-1.4.585 0 .87.333.953.63h.03v-.568h.905v2.19c0 .272.18.42.411.42.315 0 .639-.415.639-1.39v-.118c0-1.277-.95-2.326-2.484-2.326h-.04c-1.582 0-2.64 1.067-2.64 2.724v.157c0 1.867 1.237 2.654 2.57 2.654h.045c.507 0 .935-.07 1.18-.18v.731c-.219.1-.643.175-1.237.175h-.044C10.438 16 9 14.82 9 12.646v-.214C9 10.36 10.421 9 12.485 9h.035c2.12 0 3.314 1.43 3.314 3.034zm-4.04.21v.227c0 .586.227.8.581.8.31 0 .564-.17.564-.743v-.367c0-.516-.275-.708-.572-.708-.346 0-.573.245-.573.791" />
-                    </svg>
-                  </Button>
-                </a>
+          <Navbar.Toggle
+            aria-controls="basic-navbar-nav"
+            className="navbar-toggler"
+          />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ms-auto">
+              <Nav.Link href="#home" className="nav-link">
+                {content[language].nav.home}
+              </Nav.Link>
+              {/* <Nav.Link href="#skills" className="nav-link">
+                {content[language].nav.skills}
+              </Nav.Link> */}
+              <Nav.Link href="#projects" className="nav-link">
+                {content[language].nav.projects}
+              </Nav.Link>
+              <Nav.Link href="#tools" className="nav-link">
+                {content[language].nav.tools}
+              </Nav.Link>
+              <Nav.Link href="#contact" className="nav-link">
+                {content[language].nav.contact}
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
 
-                <a href="https://www.instagram.com/chaandragusta/">
-                  <Button variant="">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="#7E7366"
-                      class="bi bi-instagram"
-                      viewBox="-1 2 18 12"
-                    >
-                      <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334" />
-                    </svg>
-                  </Button>
-                </a>
-              </Col>
-              <Container>
-                <h1 className={`judul${isVisible ? ' appear' : ''}`}>I'm Aldityo Chandra Agusta</h1>
-                <p style={{ marginTop: "3vh" }}>
-                Informatics student at Sanata Dharma University with a focus on System Development. Special expertise in front-end to create attractive and interactive websites. Good at responsive interface design and implementation. The combination of technical and design, as well as the command of programming languages and web technologies, makes me a valuable asset for innovative web development projects.
+      {/* Hero Section */}
+
+      <section className="hero-section" id="home">
+        <Container>
+          <Row className="align-items-center flex-column-reverse flex-lg-row">
+            {/* Konten (akan muncul di bawah pada mobile) */}
+            <Col lg={6} className="hero-content order-2 order-lg-1">
+              <div className={`hero-text ${isVisible ? "visible" : ""}`}>
+                <h4 className="hero-subtitle">
+                  {content[language].hero.hello}
+                </h4>
+                <h1 className="hero-title">Chandra Agusta</h1>
+                <h2 className="hero-role">{content[language].hero.role}</h2>
+                <p className="hero-description">
+                  {content[language].hero.description}
                 </p>
-              </Container>
-
-              <Container style={{ marginTop: "4vh" }} className="concv">
-                <button className="cv" onClick={saveFile}>Download CV</button>
-              </Container>
+                <div className="hero-buttons">
+                  <button className="btn-primary" onClick={saveFile}>
+                    {content[language].hero.downloadCV}
+                  </button>
+                  <a href="#projects" className="btn-secondary">
+                    {content[language].hero.viewProjects}
+                  </a>
+                </div>
+              </div>
             </Col>
-            {/* <Col className="img"> */}
-              {/* <img className="fotoDiri" src="./img/fotoDiri.png" width={300}></img> */}
-            {/* </Col> */}
+
+            {/* Foto (akan muncul di atas pada mobile) */}
+            <Col
+              lg={6}
+              className="hero-image-col order-1 order-lg-2 mb-4 mb-lg-0"
+            >
+              <div className="hero-image-container">
+                <div className="hero-image-wrapper">
+                  <img
+                    src={process.env.PUBLIC_URL + "/img/fotoDiri.png"}
+                    alt="Foto Diri"
+                    className="hero-image"
+                  />
+                </div>
+              </div>
+            </Col>
           </Row>
         </Container>
-        {/* End Of Profile */}
+      </section>
 
-
-        {/* Skills */}
-        <Container id="Skills" className="Skills">
-          <h1 style={{ display:'flex', justifyContent:'center', marginBottom:'3vh'}}>Skills</h1>
-          <Row>
-            <Col className="kolomSkills"><img className="ikon" src="./img/design.png"></img></Col>
-            <Col className="kolomSkills"><img className="ikon" src="./img/dev.png"></img></Col>
-            <Col className="kolomSkills"><img className="ikon" src="./img/front.png"></img></Col>
-          </Row>
-          <Row style={{fontWeight:'bold' , marginBlock:'1% 2%', textAlign:'center'}}>
-            <Col className="kolomSkills">Design</Col>
-            <Col className="kolomSkills">Development</Col>
-            <Col className="kolomSkills">Front-end Development</Col>
-          </Row>
-          <Row style={{marginTop:'1%', textAlign:'center', marginBottom:'4%'}}>
-            <Col className="kolomSkills">Capable of producing design prototypes that help visualize concepts clearly.</Col>
-            <Col className="kolomSkills">Have skills in designing and implementing effective web development solutions.</Col>
-            <Col className="kolomSkills">Focuses on developing an interactive and user-friendly front-end.</Col>
-          </Row>
+      {/* Skills Section */}
+      {/* <section className="skills-section" id="skills">
+        <Container>
+          <div className="section-header">
+            <h2 className="section-title">{content[language].skills.title}</h2>
+            <p className="section-subtitle">
+              {content[language].skills.subtitle}
+            </p>
+          </div>
+          <div className="skills-grid">
+            <div className="skill-category">
+              <h3>{content[language].skills.frontend}</h3>
+              <div className="skills-list">
+                <div className="skill-item">
+                  <img src="/icons/react.png" alt="React" />
+                  <span>React.js</span>
+                </div>
+                <div className="skill-item">
+                  <img src="/icons/javascript.png" alt="JavaScript" />
+                  <span>JavaScript</span>
+                </div>
+              </div>
+            </div>
+            <div className="skill-category">
+              <h3>{content[language].skills.backend}</h3>
+              <div className="skills-list">
+                <div className="skill-item">
+                  <img src="/icons/laravel.png" alt="Laravel" />
+                  <span>Laravel</span>
+                </div>
+                <div className="skill-item">
+                  <img src="/icons/php.png" alt="PHP" />
+                  <span>PHP</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </Container>
-        {/* End Of Skills*/}
+      </section> */}
 
+      {/* Projects Section */}
+      <section className="projects-section" id="projects">
+        <Container>
+          <div className="section-header">
+            <h2 className="section-title">
+              {content[language].projects.title}
+            </h2>
+            <p className="section-subtitle">
+              {content[language].projects.subtitle}
+            </p>
+          </div>
 
-        {/*Tools*/}
-        <Container id="Tools" className="Tools">
-          <h1 style={{ display:'flex', justifyContent:'center', marginTop:'5vh' }}>Tools</h1>
-          <Row style={{ marginBlock:'5vh' }}>
-            <Col className="kolomTools"><img className="ikonT" src="./icons/html.png"></img></Col>
-            <Col className="kolomTools"><img className="ikonT" src="./icons/css.png"></img></Col>
-            <Col className="kolomTools"><img className="ikonT" src="./icons/js.png"></img></Col>
-            <Col className="kolomTools"><img className="ikonT" src="./icons/python.png"></img></Col>
-          </Row>
-          <Row style={{ marginBlock:'5vh' }}>
-            <Col className="kolomTools"><img className="ikonT" src="./icons/php.png"></img></Col>
-            <Col className="kolomTools"><img className="ikonT" src="./icons/bootsrap.png"></img></Col>
-            <Col className="kolomTools"><img className="ikonT" src="./icons/laravel.png"></img></Col>
-            <Col className="kolomTools"><img className="ikonT" src="./icons/react.png"></img></Col>
-          </Row>
+          <Carousel activeIndex={index} onSelect={handleSelect} interval={null}>
+            {projectsData.map((project, idx) => (
+              <Carousel.Item key={idx}>
+                <div className="project-card">
+                  <Row>
+                    <Col md={6} className="project-image-col">
+                      <div className="project-image-container">
+                        <img
+                          src={`${process.env.PUBLIC_URL}${project.image}`}
+                          alt={project.title}
+                          className="project-image"
+                        />
+                      </div>
+                    </Col>
+                    <Col md={6} className="project-content-col">
+                      <div className="project-content">
+                        <h3 className="project-title">{project.title}</h3>
+                        <p className="project-description">
+                          {project.description[language]}
+                        </p>
 
-          <Row>
-            <Col className="kolomTools"></Col>
-            <Col className="kolomTools"><img className="ikonT" src="./icons/sql.png"></img></Col>
-            <Col className="kolomTools"><img className="ikonT" src="./icons/figma.png"></img></Col>
-            <Col className="kolomTools"></Col>
-          </Row>
+                        <div className="tech-tags">
+                          {project.technologies.map((tech, i) => (
+                            <span key={i} className="tech-tag">
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+
+                        <div className="project-actions">
+                          <a
+                            href={project.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="project-link"
+                          >
+                            {content[language].projects.viewProject}
+                          </a>
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                </div>
+              </Carousel.Item>
+            ))}
+          </Carousel>
         </Container>
-        {/* End Of Tools */}
-      </body>
+      </section>
+
+      {/* Tools Section */}
+      <section className="tools-section" id="tools">
+        <Container>
+          <div className="section-header">
+            <h2 className="section-title">{content[language].tools.title}</h2>
+            <p className="section-subtitle">
+              {content[language].tools.subtitle}
+            </p>
+          </div>
+
+          <div className="tools-grid">
+            {/* React */}
+            <div className="tool-item">
+              <i className="bi bi-filetype-jsx text-primary"></i>
+              <span>React</span>
+            </div>
+
+            {/* Laravel */}
+            <div className="tool-item">
+              <i className="bi bi-filetype-php text-danger"></i>
+              <span>Laravel</span>
+            </div>
+
+            {/* CodeIgniter */}
+            <div className="tool-item">
+              <i className="bi bi-filetype-php"></i>
+              <span>CodeIgniter</span>
+            </div>
+
+            {/* MySQL */}
+            <div className="tool-item">
+              <i className="bi bi-database text-warning"></i>
+              <span>MySQL</span>
+            </div>
+
+            {/* Python */}
+            <div className="tool-item">
+              <i className="bi bi-filetype-py text-info"></i>
+              <span>Python</span>
+            </div>
+
+            {/* PHP */}
+            <div className="tool-item">
+              <i className="bi bi-filetype-php text-primary"></i>
+              <span>PHP</span>
+            </div>
+
+            {/* JavaScript */}
+            <div className="tool-item">
+              <i className="bi bi-filetype-js text-warning"></i>
+              <span>JavaScript</span>
+            </div>
+
+            {/* CSS */}
+            <div className="tool-item">
+              <i className="bi bi-filetype-css text-primary"></i>
+              <span>CSS</span>
+            </div>
+
+            {/* HTML */}
+            <div className="tool-item">
+              <i className="bi bi-filetype-html text-danger"></i>
+              <span>HTML</span>
+            </div>
+
+            {/* Java */}
+            <div className="tool-item">
+              <i className="bi bi-filetype-java text-danger"></i>
+              <span>Java</span>
+            </div>
+
+            {/* Figma */}
+            <div className="tool-item">
+              <i className="bi bi-palette text-pink"></i>
+              <span>Figma</span>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Contact Section */}
+      <section className="contact-section" id="contact">
+        <Container>
+          <div className="section-header">
+            <h2 className="section-title">{content[language].contact.title}</h2>
+            <p className="section-subtitle">
+              {content[language].contact.subtitle}
+            </p>
+          </div>
+
+          <div className="contact-content">
+            <div className="contact-info">
+              <div className="contact-item">
+                <div className="contact-icon">
+                  <i className="bi bi-envelope"></i>
+                </div>
+                <div className="contact-details">
+                  <h4>{content[language].contact.email}</h4>
+                  <a href="mailto:agustachandra1@gmail.com">
+                    agustachandra1@gmail.com
+                  </a>
+                </div>
+              </div>
+              <div className="contact-item">
+                <div className="contact-icon">
+                  <i className="bi bi-phone"></i>
+                </div>
+                <div className="contact-details">
+                  <h4>{content[language].contact.phone}</h4>
+                  <a href="tel:+6287771682765">+62 877-7168-2765</a>
+                </div>
+              </div>
+            </div>
+
+            <div className="social-links">
+              <a
+                href="https://github.com/ChandrAgusta"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i className="bi bi-github"></i>
+              </a>
+              <a
+                href="https://www.linkedin.com/in/chandraagusta/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i className="bi bi-linkedin"></i>
+              </a>
+              <a
+                href="https://www.instagram.com/chaandragusta/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i className="bi bi-instagram"></i>
+              </a>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Footer */}
+      {/* <footer className="modern-footer">
+        <Container>
+          <div className="footer-content">
+            <div className="footer-logo">
+              <span>CA</span>
+            </div>
+            <div className="footer-links">
+              <a href="#home">{content[language].nav.home}</a>
+              <a href="#skills">{content[language].nav.skills}</a>
+              <a href="#projects">{content[language].nav.projects}</a>
+              <a href="#contact">{content[language].nav.contact}</a>
+            </div>
+            <div className="footer-copyright">
+              &copy; {new Date().getFullYear()} Chandra Agusta. {content[language].footer.rights}
+            </div>
+          </div>
+        </Container>
+      </footer> */}
     </div>
   );
 }
