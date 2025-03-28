@@ -463,25 +463,25 @@ function Home() {
 
             {/* CodeIgniter */}
             <div className="tool-item">
-              <i className="bi bi-filetype-php"></i>
+              <i className="bi bi-filetype-php text-warning"></i>
               <span>CodeIgniter</span>
             </div>
 
             {/* MySQL */}
             <div className="tool-item">
-              <i className="bi bi-database text-warning"></i>
+              <i className="bi bi-database text-info"></i>
               <span>MySQL</span>
             </div>
 
             {/* Python */}
             <div className="tool-item">
-              <i className="bi bi-filetype-py text-info"></i>
+              <i className="bi bi-filetype-py text-primary"></i>
               <span>Python</span>
             </div>
 
             {/* PHP */}
             <div className="tool-item">
-              <i className="bi bi-filetype-php text-primary"></i>
+              <i className="bi bi-filetype-php text-danger"></i>
               <span>PHP</span>
             </div>
 
@@ -493,13 +493,13 @@ function Home() {
 
             {/* CSS */}
             <div className="tool-item">
-              <i className="bi bi-filetype-css text-primary"></i>
+              <i className="bi bi-filetype-css text-info"></i>
               <span>CSS</span>
             </div>
 
             {/* HTML */}
             <div className="tool-item">
-              <i className="bi bi-filetype-html text-danger"></i>
+              <i className="bi bi-filetype-html text-primary"></i>
               <span>HTML</span>
             </div>
 
@@ -511,7 +511,7 @@ function Home() {
 
             {/* Figma */}
             <div className="tool-item">
-              <i className="bi bi-palette text-pink"></i>
+              <i className="bi bi-palette text-info"></i>
               <span>Figma</span>
             </div>
           </div>
@@ -535,21 +535,13 @@ function Home() {
                   <i className="bi bi-envelope"></i>
                 </div>
                 <div className="contact-details">
-                  <h4>{content[language].contact.email}</h4>
+                  <p className="section-subtitle">{content[language].contact.email}</p>
                   <a href="mailto:agustachandra1@gmail.com">
                     agustachandra1@gmail.com
                   </a>
                 </div>
               </div>
-              <div className="contact-item">
-                <div className="contact-icon">
-                  <i className="bi bi-phone"></i>
-                </div>
-                <div className="contact-details">
-                  <h4>{content[language].contact.phone}</h4>
-                  <a href="tel:+6287771682765">+62 877-7168-2765</a>
-                </div>
-              </div>
+  
             </div>
 
             <div className="social-links">
