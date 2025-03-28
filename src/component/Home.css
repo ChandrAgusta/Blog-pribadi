@@ -12,7 +12,7 @@
   --text-light: #7F8C8D; /* Secondary text */
   
   /* Glass Effects */
-  --glass-bg: rgba(255, 255, 255, 0.2);
+  --glass-bg: rgba(255, 255, 255, 0.237);
   --glass-border: rgba(255, 255, 255, 0.3);
   --glass-blur: blur(15px);
   --glass-saturate: saturate(180%);
@@ -34,7 +34,7 @@
   --text-light: #95A5A6; /* Secondary text */
   
   /* Glass Effects */
-  --glass-bg: rgba(30, 30, 30, 0.25);
+  --glass-bg: rgba(53, 47, 47, 0.25);
   --glass-border: rgba(255, 255, 255, 0.1);
 }
 
